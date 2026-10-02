@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Obesity Market Performance Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1:       #2a78d6;
+    --series-2:       #eb6834;
+    --series-3:       #1baf7a;
+    --series-4:       #eda100;
+    --series-5:       #e87ba4;
+    --series-6:       #008300;
+    --series-7:       #4a3aa7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-1:       #3987e5;
+      --series-2:       #d95926;
+      --series-3:       #199e70;
+      --series-4:       #c98500;
+      --series-5:       #d55181;
+      --series-6:       #008300;
+      --series-7:       #9085e9;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-1:       #3987e5;
+    --series-2:       #d95926;
+    --series-3:       #199e70;
+    --series-4:       #c98500;
+    --series-5:       #d55181;
+    --series-6:       #008300;
+    --series-7:       #9085e9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page);
+    color: var(--text-primary);
+  }
+  .viz-root { padding: 24px 16px 48px; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .subtitle { color: var(--text-secondary); font-size: 13px; margin: 0 0 20px; }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 760px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  .kpi-tile {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .kpi-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 22px;
+    font-weight: 600;
+    font-variant-numeric: proportional-nums;
+  }
+  .kpi-sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) { .panels { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px 10px;
+  }
+  .panel.full { grid-column: 1 / -1; }
+  .panel-title { font-size: 13px; font-weight: 600; margin: 0 0 2px; }
+  .panel-note { font-size: 11px; color: var(--text-muted); margin: 0 0 8px; }
+  svg { display: block; }
+  .axis text { fill: var(--text-muted); font-size: 10px; }
+  .axis path, .axis line { stroke: var(--baseline); }
+  .grid line { stroke: var(--gridline); shape-rendering: crispEdges; }
+  .grid path { display: none; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 11px; color: var(--text-secondary); margin-top: 6px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; }
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--text-primary);
+    color: var(--surface-1);
+    font-size: 11px;
+    padding: 6px 9px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.1s;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .state-bar { fill: var(--series-1); }
+  .state-bar:hover { fill: var(--series-2); }
+  footer { font-size: 11px; color: var(--text-muted); margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+  <h1>Obesity Therapy Market Performance Dashboard</h1>
+  <p class="subtitle">Synthetic public-prescription-style data &middot; 50 states &middot; quarterly, 2021&ndash;2025 &middot; driven live by data/dashboard_data.json</p>
+
+  <div class="kpi-grid" id="kpi-grid"></div>
+
+  <div class="panels">
+    <div class="panel">
+      <p class="panel-title">Market volume by state (top 15)</p>
+      <p class="panel-note">Total prescriptions, all products &amp; payers</p>
+      <svg id="state-chart" width="100%" height="320" viewBox="0 0 560 320" preserveAspectRatio="xMinYMin meet"></svg>
+    </div>
+    <div class="panel">
+      <p class="panel-title">Market share by product</p>
+      <p class="panel-note">Share of total prescription volume, all states</p>
+      <svg id="product-chart" width="100%" height="320" viewBox="0 0 560 320" preserveAspectRatio="xMinYMin meet"></svg>
+    </div>
+    <div class="panel full">
+      <p class="panel-title">Quarterly prescription volume trend</p>
+      <p class="panel-note">Total market, 20 quarters (2021 Q1 &ndash; 2025 Q4)</p>
+      <svg id="trend-chart" width="100%" height="260" viewBox="0 0 1140 260" preserveAspectRatio="xMinYMin meet"></svg>
+    </div>
+    <div class="panel full">
+      <p class="panel-title">Payer mix</p>
+      <p class="panel-note">Share of total prescription volume by payer type</p>
+      <svg id="payer-chart" width="100%" height="90" viewBox="0 0 1140 90" preserveAspectRatio="xMinYMin meet"></svg>
+      <div class="legend" id="payer-legend"></div>
+    </div>
+  </div>
+
+  <footer>
+    Data: synthetic, generated by sql_local/simulate_data.py (fixed seed 42) and
+    aggregated by real SQL against a local DuckDB warehouse. Not real claims data.
+  </footer>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const seriesColors = [
+  getCss('--series-1'), getCss('--series-2'), getCss('--series-3'), getCss('--series-4'),
+  getCss('--series-5'), getCss('--series-6'), getCss('--series-7')
+];
+function getCss(name) {
+  return getComputedStyle(document.querySelector('.viz-root')).getPropertyValue(name).trim();
+}
+
+const tooltip = d3.select('#tooltip');
+
+d3.json('../data/dashboard_data.json').then(data => {
+  renderKpis(data.kpis);
+  renderStateChart(data.state_breakdown);
+  renderProductChart(data.product_breakdown);
+  renderTrendChart(data.quarterly_trend);
+  renderPayerChart(data.payer_mix);
+}).catch(err => {
+  d3.select('#kpi-grid').html('<p style="color:var(--text-secondary)">Could not load data/dashboard_data.json. Run <code>python3 run_all.py</code> from the project root first, then open this file.</p>');
+  console.error(err);
+});
+
+function fmt(n) {
+  return d3.format(',')(Math.round(n));
+}
+
+function renderKpis(kpis) {
+  const tiles = [
+    { label: 'Total Market Volume', value: fmt(kpis.total_market_volume_rx) + ' Rx', sub: `Across ${kpis.states_covered} states` },
+    { label: 'Top Product', value: kpis.top_product_by_volume.product, sub: fmt(kpis.top_product_by_volume.total_rx) + ' Rx total' },
+    { label: 'Latest QoQ Growth', value: kpis.latest_qoq_growth_pct + '%', sub: 'Quarter over quarter' },
+    { label: 'Top State', value: kpis.top_state_by_volume.state, sub: fmt(kpis.top_state_by_volume.total_rx) + ' Rx' },
+    { label: 'Latest YoY Growth', value: kpis.latest_yoy_growth_pct + '%', sub: 'Year over year' },
+    { label: 'New-Product Adoption', value: kpis.new_product_adoption_rate_pct + '%', sub: 'Products launched mid-window' },
+    { label: 'Market Concentration (HHI)', value: kpis.market_concentration_hhi, sub: hhiLabel(kpis.market_concentration_hhi) },
+    { label: 'Payer Mix', value: dominantPayer(kpis.payer_mix_split_pct), sub: payerSummary(kpis.payer_mix_split_pct) },
+  ];
+  const grid = d3.select('#kpi-grid');
+  const tile = grid.selectAll('.kpi-tile').data(tiles).join('div').attr('class', 'kpi-tile');
+  tile.html(d => `<div class="kpi-label">${d.label}</div><div class="kpi-value">${d.value}</div><div class="kpi-sub">${d.sub}</div>`);
+}
+
+function hhiLabel(hhi) {
+  if (hhi < 1500) return 'Unconcentrated market';
+  if (hhi < 2500) return 'Moderately concentrated';
+  return 'Highly concentrated';
+}
+function dominantPayer(mix) {
+  const entries = Object.entries(mix);
+  entries.sort((a, b) => b[1] - a[1]);
+  return entries[0][0];
+}
+function payerSummary(mix) {
+  const entries = Object.entries(mix);
+  entries.sort((a, b) => b[1] - a[1]);
+  return entries.map(e => `${e[0]} ${e[1]}%`).join(' / ');
+}
+
+function renderStateChart(stateData) {
+  const top15 = stateData.slice(0, 15);
+  const margin = { top: 10, right: 16, bottom: 20, left: 42 };
+  const width = 560 - margin.left - margin.right;
+  const height = 320 - margin.top - margin.bottom;
+  const svg = d3.select('#state-chart');
+  svg.selectAll('*').remove();
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(top15.map(d => d.state)).range([0, width]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, d3.max(top15, d => d.total_rx)]).nice().range([height, 0]);
+
+  g.append('g').attr('class', 'grid')
+    .call(d3.axisLeft(y).ticks(5).tickSize(-width).tickFormat(''));
+
+  g.append('g').attr('class', 'axis').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x).tickSizeOuter(0));
+  g.append('g').attr('class', 'axis')
+    .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('.2s')));
+
+  g.selectAll('.state-bar').data(top15).join('rect')
+    .attr('class', 'state-bar')
+    .attr('x', d => x(d.state))
+    .attr('width', x.bandwidth())
+    .attr('y', d => y(d.total_rx))
+    .attr('height', d => height - y(d.total_rx))
+    .attr('rx', 3)
+    .on('mousemove', (event, d) => {
+      tooltip.style('opacity', 1)
+        .html(`<strong>${d.state}</strong><br>${fmt(d.total_rx)} Rx<br>$${fmt(d.total_spend)} spend`)
+        .style('left', (event.pageX + 12) + 'px')
+        .style('top', (event.pageY - 24) + 'px');
+    })
+    .on('mouseleave', () => tooltip.style('opacity', 0));
+}
+
+function renderProductChart(productData) {
+  const total = d3.sum(productData, d => d.total_rx);
+  const margin = { top: 10, right: 60, bottom: 20, left: 150 };
+  const width = 560 - margin.left - margin.right;
+  const height = 320 - margin.top - margin.bottom;
+  const svg = d3.select('#product-chart');
+  svg.selectAll('*').remove();
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const y = d3.scaleBand().domain(productData.map(d => d.product_name)).range([0, height]).padding(0.25);
+  const x = d3.scaleLinear().domain([0, d3.max(productData, d => d.total_rx)]).nice().range([0, width]);
+
+  g.append('g').attr('class', 'grid')
+    .call(d3.axisBottom(x).ticks(4).tickSize(height).tickFormat(''))
+    .attr('transform', `translate(0,0)`);
+
+  g.append('g').attr('class', 'axis').call(d3.axisLeft(y).tickSizeOuter(0));
+  g.append('g').attr('class', 'axis').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x).ticks(4).tickFormat(d3.format('.2s')));
+
+  g.selectAll('.pbar').data(productData).join('rect')
+    .attr('class', 'pbar')
+    .attr('y', d => y(d.product_name))
+    .attr('height', y.bandwidth())
+    .attr('x', 0)
+    .attr('width', d => x(d.total_rx))
+    .attr('fill', (d, i) => seriesColors[i % seriesColors.length])
+    .attr('rx', 3)
+    .on('mousemove', (event, d) => {
+      const pct = ((d.total_rx / total) * 100).toFixed(1);
+      tooltip.style('opacity', 1)
+        .html(`<strong>${d.product_name}</strong><br>${fmt(d.total_rx)} Rx (${pct}% share)`)
+        .style('left', (event.pageX + 12) + 'px')
+        .style('top', (event.pageY - 24) + 'px');
+    })
+    .on('mouseleave', () => tooltip.style('opacity', 0));
+}
+
+function renderTrendChart(trendData) {
+  const margin = { top: 14, right: 20, bottom: 26, left: 56 };
+  const width = 1140 - margin.left - margin.right;
+  const height = 260 - margin.top - margin.bottom;
+  const svg = d3.select('#trend-chart');
+  svg.selectAll('*').remove();
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scalePoint().domain(trendData.map(d => d.label)).range([0, width]);
+  const y = d3.scaleLinear().domain([0, d3.max(trendData, d => d.total_rx)]).nice().range([height, 0]);
+
+  g.append('g').attr('class', 'grid')
+    .call(d3.axisLeft(y).ticks(5).tickSize(-width).tickFormat(''));
+
+  const tickEvery = trendData.filter((d, i) => i % 2 === 0).map(d => d.label);
+  g.append('g').attr('class', 'axis').attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(x).tickValues(tickEvery));
+  g.append('g').attr('class', 'axis').call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('.2s')));
+
+  const line = d3.line().x(d => x(d.label)).y(d => y(d.total_rx)).curve(d3.curveMonotoneX);
+  g.append('path').datum(trendData).attr('fill', 'none')
+    .attr('stroke', seriesColors[0]).attr('stroke-width', 2).attr('d', line);
+
+  const focus = g.append('g').style('display', 'none');
+  focus.append('circle').attr('r', 4).attr('fill', seriesColors[0]);
+  const vline = g.append('line').attr('class', 'grid').attr('y1', 0).attr('y2', height).style('display', 'none');
+
+  const bisect = d3.bisector(d => x(d.label)).left;
+
+  svg.append('rect')
+    .attr('width', width).attr('height', height)
+    .attr('transform', `translate(${margin.left},${margin.top})`)
+    .style('fill', 'none').style('pointer-events', 'all')
+    .on('mousemove', function (event) {
+      const [mx] = d3.pointer(event);
+      const domain = trendData.map(d => x(d.label));
+      let i = d3.bisector(d => d).left(domain, mx);
+      i = Math.max(0, Math.min(trendData.length - 1, i));
+      const d = trendData[i];
+      focus.style('display', null).attr('transform', `translate(${x(d.label)},${y(d.total_rx)})`);
+      vline.style('display', null).attr('x1', x(d.label)).attr('x2', x(d.label));
+      tooltip.style('opacity', 1)
+        .html(`<strong>${d.label}</strong><br>${fmt(d.total_rx)} Rx`)
+        .style('left', (event.pageX + 12) + 'px')
+        .style('top', (event.pageY - 24) + 'px');
+    })
+    .on('mouseleave', () => {
+      focus.style('display', 'none');
+      vline.style('display', 'none');
+      tooltip.style('opacity', 0);
+    });
+}
+
+function renderPayerChart(payerData) {
+  const total = d3.sum(payerData, d => d.total_rx);
+  const margin = { left: 10, right: 10 };
+  const width = 1140 - margin.left - margin.right;
+  const height = 40;
+  const svg = d3.select('#payer-chart');
+  svg.selectAll('*').remove();
+  const g = svg.append('g').attr('transform', `translate(${margin.left},20)`);
+
+  let cum = 0;
+  const segs = payerData.map((d, i) => {
+    const w = (d.total_rx / total) * width;
+    const seg = { ...d, x: cum, w, color: seriesColors[i % seriesColors.length] };
+    cum += w;
+    return seg;
+  });
+
+  g.selectAll('rect').data(segs).join('rect')
+    .attr('x', d => d.x).attr('width', d => Math.max(0, d.w - 2))
+    .attr('y', 0).attr('height', height).attr('rx', 3)
+    .attr('fill', d => d.color)
+    .on('mousemove', (event, d) => {
+      const pct = ((d.total_rx / total) * 100).toFixed(1);
+      tooltip.style('opacity', 1)
+        .html(`<strong>${d.payer_type}</strong><br>${fmt(d.total_rx)} Rx (${pct}%)`)
+        .style('left', (event.pageX + 12) + 'px')
+        .style('top', (event.pageY - 24) + 'px');
+    })
+    .on('mouseleave', () => tooltip.style('opacity', 0));
+
+  const legend = d3.select('#payer-legend');
+  legend.selectAll('*').remove();
+  const items = legend.selectAll('.legend-item').data(segs).join('div').attr('class', 'legend-item');
+  items.append('div').attr('class', 'legend-swatch').style('background', d => d.color);
+  items.append('span').text(d => `${d.payer_type} (${((d.total_rx / total) * 100).toFixed(1)}%)`);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "rows_generated": 1120000,
+  "warehouse_rows": 1120000,
+  "naive_query_seconds": 0.1525644580106018,
+  "cte_query_seconds": 0.024998249995405786,
+  "speedup_pct": 83.61463061490466,
+  "results_identical": true,
+  "kpis": {
+    "total_market_volume_rx": 10321122,
+    "top_product_by_volume": {
+      "product": "Semaglutide_Inj",
+      "total_rx": 3182297
+    },
+    "latest_qoq_growth_pct": 4.47,
+    "top_state_by_volume": {
+      "state": "CA",
+      "total_rx": 1211058
+    },
+    "payer_mix_split_pct": {
+      "Medicaid": 25.0,
+      "Medicare": 24.97,
+      "Cash/Other": 25.01,
+      "Commercial": 25.02
+    },
+    "latest_yoy_growth_pct": 21.97,
+    "new_product_adoption_rate_pct": 28.57,
+    "market_concentration_hhi": 2045.2,
+    "states_covered": 50
+  }
+}

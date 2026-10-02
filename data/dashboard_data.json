@@ -1,0 +1,426 @@
+{
+  "kpis": {
+    "total_market_volume_rx": 10321122,
+    "top_product_by_volume": {
+      "product": "Semaglutide_Inj",
+      "total_rx": 3182297
+    },
+    "latest_qoq_growth_pct": 4.47,
+    "top_state_by_volume": {
+      "state": "CA",
+      "total_rx": 1211058
+    },
+    "payer_mix_split_pct": {
+      "Medicaid": 25.0,
+      "Medicare": 24.97,
+      "Cash/Other": 25.01,
+      "Commercial": 25.02
+    },
+    "latest_yoy_growth_pct": 21.97,
+    "new_product_adoption_rate_pct": 28.57,
+    "market_concentration_hhi": 2045.2,
+    "states_covered": 50
+  },
+  "state_breakdown": [
+    {
+      "state": "CA",
+      "total_rx": 1211058.0,
+      "total_spend": 932234758.1299976
+    },
+    {
+      "state": "TX",
+      "total_rx": 938225.0,
+      "total_spend": 721685174.88
+    },
+    {
+      "state": "FL",
+      "total_rx": 682769.0,
+      "total_spend": 525731364.4
+    },
+    {
+      "state": "NY",
+      "total_rx": 617526.0,
+      "total_spend": 475932568.84000367
+    },
+    {
+      "state": "PA",
+      "total_rx": 404569.0,
+      "total_spend": 312118295.0699995
+    },
+    {
+      "state": "IL",
+      "total_rx": 393430.0,
+      "total_spend": 303382613.41999996
+    },
+    {
+      "state": "OH",
+      "total_rx": 367079.0,
+      "total_spend": 283457721.88999766
+    },
+    {
+      "state": "GA",
+      "total_rx": 339332.0,
+      "total_spend": 261098160.59000024
+    },
+    {
+      "state": "NC",
+      "total_rx": 330406.0,
+      "total_spend": 253509366.60000032
+    },
+    {
+      "state": "MI",
+      "total_rx": 309761.0,
+      "total_spend": 238212603.28999943
+    },
+    {
+      "state": "NJ",
+      "total_rx": 289268.0,
+      "total_spend": 223015912.37000063
+    },
+    {
+      "state": "VA",
+      "total_rx": 270051.0,
+      "total_spend": 207627392.74000132
+    },
+    {
+      "state": "WA",
+      "total_rx": 243704.0,
+      "total_spend": 187669829.71999887
+    },
+    {
+      "state": "AZ",
+      "total_rx": 227697.0,
+      "total_spend": 175522777.6699992
+    },
+    {
+      "state": "MA",
+      "total_rx": 218524.0,
+      "total_spend": 168336549.73000017
+    },
+    {
+      "state": "TN",
+      "total_rx": 218258.0,
+      "total_spend": 168110733.53000024
+    },
+    {
+      "state": "IN",
+      "total_rx": 210998.0,
+      "total_spend": 162531140.76000085
+    },
+    {
+      "state": "MD",
+      "total_rx": 192955.0,
+      "total_spend": 148862041.89000022
+    },
+    {
+      "state": "MO",
+      "total_rx": 192927.0,
+      "total_spend": 148626670.43000013
+    },
+    {
+      "state": "WI",
+      "total_rx": 184025.0,
+      "total_spend": 141592777.84000018
+    },
+    {
+      "state": "CO",
+      "total_rx": 181099.0,
+      "total_spend": 139691981.18000016
+    },
+    {
+      "state": "MN",
+      "total_rx": 177401.0,
+      "total_spend": 136392216.14000058
+    },
+    {
+      "state": "SC",
+      "total_rx": 161751.0,
+      "total_spend": 124838802.29000057
+    },
+    {
+      "state": "AL",
+      "total_rx": 153451.0,
+      "total_spend": 118255018.09999993
+    },
+    {
+      "state": "LA",
+      "total_rx": 143177.0,
+      "total_spend": 110123558.07000066
+    },
+    {
+      "state": "KY",
+      "total_rx": 139695.0,
+      "total_spend": 107464006.6600002
+    },
+    {
+      "state": "OR",
+      "total_rx": 130582.0,
+      "total_spend": 100446070.75000025
+    },
+    {
+      "state": "OK",
+      "total_rx": 124559.0,
+      "total_spend": 95855535.21000017
+    },
+    {
+      "state": "CT",
+      "total_rx": 112248.0,
+      "total_spend": 86663637.23000053
+    },
+    {
+      "state": "UT",
+      "total_rx": 105571.0,
+      "total_spend": 81304564.53999981
+    },
+    {
+      "state": "NV",
+      "total_rx": 99199.0,
+      "total_spend": 76180818.7699999
+    },
+    {
+      "state": "IA",
+      "total_rx": 99155.0,
+      "total_spend": 76203870.85000026
+    },
+    {
+      "state": "AR",
+      "total_rx": 93208.0,
+      "total_spend": 71632354.17999987
+    },
+    {
+      "state": "MS",
+      "total_rx": 90510.0,
+      "total_spend": 69996399.43999979
+    },
+    {
+      "state": "KS",
+      "total_rx": 89709.0,
+      "total_spend": 69001847.58999993
+    },
+    {
+      "state": "NM",
+      "total_rx": 65349.0,
+      "total_spend": 50325484.90999986
+    },
+    {
+      "state": "NE",
+      "total_rx": 62082.0,
+      "total_spend": 47741696.23999995
+    },
+    {
+      "state": "ID",
+      "total_rx": 58734.0,
+      "total_spend": 45140230.43999972
+    },
+    {
+      "state": "WV",
+      "total_rx": 55708.0,
+      "total_spend": 42744505.150000155
+    },
+    {
+      "state": "HI",
+      "total_rx": 43268.0,
+      "total_spend": 32917980.450000018
+    },
+    {
+      "state": "NH",
+      "total_rx": 43091.0,
+      "total_spend": 32878257.310000002
+    },
+    {
+      "state": "ME",
+      "total_rx": 42895.0,
+      "total_spend": 32645499.859999996
+    },
+    {
+      "state": "RI",
+      "total_rx": 33727.0,
+      "total_spend": 25440805.650000054
+    },
+    {
+      "state": "MT",
+      "total_rx": 33574.0,
+      "total_spend": 25338785.680000007
+    },
+    {
+      "state": "DE",
+      "total_rx": 30754.0,
+      "total_spend": 23137194.67000005
+    },
+    {
+      "state": "SD",
+      "total_rx": 27468.0,
+      "total_spend": 20724407.34000003
+    },
+    {
+      "state": "ND",
+      "total_rx": 24085.0,
+      "total_spend": 18067896.40999995
+    },
+    {
+      "state": "AK",
+      "total_rx": 20873.0,
+      "total_spend": 15754023.909999952
+    },
+    {
+      "state": "WY",
+      "total_rx": 17878.0,
+      "total_spend": 13636150.110000009
+    },
+    {
+      "state": "VT",
+      "total_rx": 17759.0,
+      "total_spend": 13548277.759999944
+    }
+  ],
+  "product_breakdown": [
+    {
+      "product_name": "Semaglutide_Inj",
+      "total_rx": 3182297.0
+    },
+    {
+      "product_name": "Tirzepatide_Inj",
+      "total_rx": 2376970.0
+    },
+    {
+      "product_name": "Liraglutide_Inj",
+      "total_rx": 1746789.0
+    },
+    {
+      "product_name": "Phentermine_Oral",
+      "total_rx": 1271936.0
+    },
+    {
+      "product_name": "Naltrexone_Bupropion_Oral",
+      "total_rx": 955698.0
+    },
+    {
+      "product_name": "Orlistat_Oral",
+      "total_rx": 635228.0
+    },
+    {
+      "product_name": "Setmelanotide_Inj",
+      "total_rx": 152204.0
+    }
+  ],
+  "quarterly_trend": [
+    {
+      "label": "2021Q1",
+      "quarter_index": 0,
+      "total_rx": 28333
+    },
+    {
+      "label": "2021Q2",
+      "quarter_index": 1,
+      "total_rx": 77559
+    },
+    {
+      "label": "2021Q3",
+      "quarter_index": 2,
+      "total_rx": 124681
+    },
+    {
+      "label": "2021Q4",
+      "quarter_index": 3,
+      "total_rx": 168970
+    },
+    {
+      "label": "2022Q1",
+      "quarter_index": 4,
+      "total_rx": 227095
+    },
+    {
+      "label": "2022Q2",
+      "quarter_index": 5,
+      "total_rx": 293221
+    },
+    {
+      "label": "2022Q3",
+      "quarter_index": 6,
+      "total_rx": 354306
+    },
+    {
+      "label": "2022Q4",
+      "quarter_index": 7,
+      "total_rx": 410607
+    },
+    {
+      "label": "2023Q1",
+      "quarter_index": 8,
+      "total_rx": 465754
+    },
+    {
+      "label": "2023Q2",
+      "quarter_index": 9,
+      "total_rx": 521114
+    },
+    {
+      "label": "2023Q3",
+      "quarter_index": 10,
+      "total_rx": 570445
+    },
+    {
+      "label": "2023Q4",
+      "quarter_index": 11,
+      "total_rx": 614081
+    },
+    {
+      "label": "2024Q1",
+      "quarter_index": 12,
+      "total_rx": 662767
+    },
+    {
+      "label": "2024Q2",
+      "quarter_index": 13,
+      "total_rx": 708025
+    },
+    {
+      "label": "2024Q3",
+      "quarter_index": 14,
+      "total_rx": 747621
+    },
+    {
+      "label": "2024Q4",
+      "quarter_index": 15,
+      "total_rx": 794062
+    },
+    {
+      "label": "2025Q1",
+      "quarter_index": 16,
+      "total_rx": 829696
+    },
+    {
+      "label": "2025Q2",
+      "quarter_index": 17,
+      "total_rx": 869988
+    },
+    {
+      "label": "2025Q3",
+      "quarter_index": 18,
+      "total_rx": 906155
+    },
+    {
+      "label": "2025Q4",
+      "quarter_index": 19,
+      "total_rx": 946642
+    }
+  ],
+  "payer_mix": [
+    {
+      "payer_type": "Commercial",
+      "total_rx": 2582615.0
+    },
+    {
+      "payer_type": "Cash/Other",
+      "total_rx": 2581334.0
+    },
+    {
+      "payer_type": "Medicaid",
+      "total_rx": 2580150.0
+    },
+    {
+      "payer_type": "Medicare",
+      "total_rx": 2577023.0
+    }
+  ]
+}
